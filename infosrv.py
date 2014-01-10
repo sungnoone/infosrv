@@ -117,9 +117,9 @@ def post_form_data():
         return request.method
 
 
-## Get Select Items -- year
+## Get ListItems
 @app.route('/api/items/<item_class>/', methods=['GET', 'POST'])
-def get_items_year(item_class):
+def get_list_items(item_class):
     #Open log message file
     log = open(log_file, 'a+')
     log.write('\r\n>>>>>>>>>>>> Client contact /api/items/<'+item_class+'/>...'+str(datetime.datetime.now())+'\r\n')
@@ -187,6 +187,57 @@ def get_items_year(item_class):
         client.close()
         log.close()
         return request.method
+
+## Get all data
+@app.route('/api/query/all/', methods=['GET'])
+def query_all():
+    log = open(log_file, 'a+')
+    log.write('>>>Client contact /api/query/all/...'+str(datetime.datetime.now())+'\r\n')
+
+    ## db operation
+    client = MongoClient(DB_IP, DB_PORT)
+    db = client[DB_NAME]
+    collection = db[DB_COLLECTION]
+    posts = collection.find()
+    log.write('Find all data count: %s \r\n' % str(posts.count()))
+    post_json = {}
+    for idx, iDoc in enumerate(posts):
+        iDoc_json = bson.json_util.dumps(iDoc, ensure_ascii=False)
+        post_json.update({idx: iDoc_json})
+    jsonarray = bson.json_util.dumps(post_json, ensure_ascii=False)
+    #log.write('%s' % str(jsonarray))
+    log.write('%s' % post_json)
+    log.close()
+    return bson.json_util.dumps(post_json, ensure_ascii=False)
+
+
+## Get file
+@app.route('/api/file/<fileid>', methods=['GET'])
+def test4(fileid):
+    log = open(log_file, 'a+')
+    log.write('>>>Client contact /api/srv4/<fileid>...'+str(datetime.datetime.now())+'\r\n')
+
+    client = MongoClient(DB_IP, DB_PORT)
+    db = client[DB_NAME]
+    fs = gridfs.GridFS(db, GRID_FS_FILE)
+    ## pymongo get file
+    outputdata = fs.get(bson.json_util.ObjectId(fileid))
+
+    thedata = outputdata.read()
+    save_full_path = os.path.join(DOWNLOAD_FOLDER, str(fileid)+'.jpg')
+    log.write(save_full_path+'\r\n')
+    # write definition
+    outputfile = open(save_full_path, 'wb')
+    #save to disk
+    outputfile.write(thedata)
+
+    #outputdata.close()
+    #outputfile.close()
+    client.close()
+    log.close()
+
+    #return str(str(fileid)+'.jpg')
+    return send_file(save_full_path, mimetype='image/jpg')
 
 
 if __name__ == '__main__':
