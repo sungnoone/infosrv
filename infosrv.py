@@ -8,6 +8,9 @@ import datetime
 import gridfs
 import bson.json_util
 import json
+import hashlib
+import base64
+
 from werkzeug.utils import secure_filename
 app = Flask(__name__)
 
@@ -26,11 +29,20 @@ DB_COLLECTION_FIELD = 'items_field'
 DB_COLLECTION_CLASS = 'items_class'
 DB_COLLECTION_TARGET = 'items_target'
 DB_COLLECTION_CREATOR = 'items_creator'
+DB_COLLECTION_Users = 'users'
 
 GRID_FS_FILE = "images"
 
 #Remote Data Fields Name
 REMOTE_FIELD_IMAGE1 = 'info_img1'
+
+#hash key field name
+#HASH_KEY_NAME = 'password'
+
+#mongodb account infomation keys name
+ACCOUNT_KEY_NAME = 'name'
+ACCOUNT_KEY_PASSWORD = 'password'
+ACCOUNT_KEY_HASH = 'hash'
 
 
 #produce datetime string
@@ -188,6 +200,7 @@ def get_list_items(item_class):
         log.close()
         return request.method
 
+
 ## Get all data
 @app.route('/api/query/all/', methods=['GET'])
 def query_all():
@@ -213,7 +226,7 @@ def query_all():
 
 ## Get file
 @app.route('/api/file/<fileid>', methods=['GET'])
-def test4(fileid):
+def query_file(fileid):
     log = open(log_file, 'a+')
     log.write('>>>Client contact /api/srv4/<fileid>...'+str(datetime.datetime.now())+'\r\n')
 
@@ -238,6 +251,100 @@ def test4(fileid):
 
     #return str(str(fileid)+'.jpg')
     return send_file(save_full_path, mimetype='image/jpg')
+
+
+## Add User
+@app.route('/api/user/add/', methods=['POST'])
+def user_add():
+    log = open(log_file, 'a+')
+    log.write('>>>Client contact /api/user/add/...'+str(datetime.datetime.now())+'\r\n')
+    if request.method == 'POST':
+        log.write('request method POST\r\n')
+        ##write request
+        request_data = request.data
+        request_form = request.form
+        data = json.loads(str(request_data, encoding='utf-8'))
+        #Write data into db
+        #db operation
+        client = MongoClient(DB_IP, DB_PORT)
+        db = client[DB_NAME]
+        #Text Data
+        collection = db[DB_COLLECTION_Users]
+        post_json = {}
+        ## Traversal all items in ImmutableMultiDict. Convert into json
+        encrypt_Source = ''
+        for item in data:
+            ## log every key&value in ImmutableMultiDict object
+            item_json = {str(item):str(data[item])}
+            post_json.update(item_json)
+            #Using password as hash key
+            if str(item)==ACCOUNT_KEY_PASSWORD:
+                encrypt_Source = data[item]
+        log.write('encrypt_Source:'+encrypt_Source+'\r\n')
+        hash_object = hashlib.sha256(str.encode(encrypt_Source))
+        hex_dig = hash_object.hexdigest()
+        post_json.update({'hash':hex_dig})
+        log.write('post json: '+str(post_json)+'\r\n')
+        ## Save form data to db
+        log.write('before save to db...\r\n')
+        ret_id = collection.save(post_json)
+        log.write('after save to db:'+str(ret_id)+'\r\n')
+        client.close()
+
+        log.close()
+        return "Data Saved:"#+str(ret_id)
+    else:
+        log.close()
+        return request.method
+
+
+## Query User
+@app.route('/api/user/check/<hash_code>', methods=['GET'])
+def user_check(hash_code):
+    log = open(log_file, 'a+')
+    log.write('>>>Client contact /api/user/check/'+hash_code+"..."+str(datetime.datetime.now())+'\r\n')
+    #decode base64 encoding
+    try:
+        log.write('Decoding...'+hash_code+'\r\n')
+        decode_data = base64.b64decode(hash_code)
+        #convert to utf-8
+        decode_data = decode_data.decode("utf-8")
+    except:
+        log.write('Decoding fail...\r\n')
+        log.close()
+        return ""
+    ## db operation
+    try:
+        client = MongoClient(DB_IP, DB_PORT)
+        db = client[DB_NAME]
+        collection = db[DB_COLLECTION_Users]
+        posts = collection.find()
+        log.write('Find all data count: %s \r\n' % str(posts.count()))
+    except:
+        log.write('DB operation fail...\r\n')
+        log.close()
+        return ""
+    post_json = {}
+    for idx, iDoc in enumerate(posts):
+        #mongodb doc dump to string
+        doc_json = bson.json_util.dumps(iDoc, ensure_ascii=False)
+        #string convert to json
+        doc_json = json.loads(doc_json)
+        #To get key value
+        val_username = doc_json[ACCOUNT_KEY_NAME]
+        val_password = doc_json[ACCOUNT_KEY_PASSWORD]
+        val_hash = doc_json[ACCOUNT_KEY_HASH]
+        if val_hash == decode_data:
+            log.write('Find match hash code: '+decode_data + ' , return username: '+ val_username + '\r\n')
+            log.close()
+            client.close()
+            #return match result
+            return val_username
+    #no match user hash
+    log.close()
+    client.close()
+    #return bson.json_util.dumps(post_json, ensure_ascii=False)
+    return ""
 
 
 if __name__ == '__main__':
