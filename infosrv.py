@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 import os
+import sys
 
 from flask import Flask, request, send_file
 from pymongo import *
@@ -15,9 +16,10 @@ from werkzeug.utils import secure_filename
 app = Flask(__name__)
 
 #common variable
-log_file = '/tmp/infosrv_log.txt'
-UPLOAD_FOLDER = '/tmp/Uploads'
-DOWNLOAD_FOLDER = '/tmp/Downloads'
+APP_PATH = os.path.dirname(os.path.realpath(__file__))
+log_file = APP_PATH+'/infosrv_log.txt'
+UPLOAD_FOLDER = APP_PATH+'/Uploads'
+DOWNLOAD_FOLDER = APP_PATH+'/Downloads'
 
 #DB common variable
 DB_IP = '192.168.1.101'
@@ -58,9 +60,19 @@ def nowStr():
 
 
 #For http connection testing
-@app.route('/')
-def hello_world():
+@app.route('/test/hello/')
+def test_hello():
     return 'Hello World!'
+
+
+#
+@app.route('/test/path/')
+def test_path():
+    s = 'Log file:'+log_file+' Upload folder: '+UPLOAD_FOLDER+' Download folder:'+DOWNLOAD_FOLDER
+    return s
+
+
+#====================Testing and Formal area divider======================
 
 
 #Post FORM data to db (include image)
@@ -219,7 +231,7 @@ def query_all():
         post_json.update({idx: iDoc_json})
     jsonarray = bson.json_util.dumps(post_json, ensure_ascii=False)
     #log.write('%s' % str(jsonarray))
-    log.write('%s' % post_json)
+    log.write('%s\r\n' % post_json)
     log.close()
     return bson.json_util.dumps(post_json, ensure_ascii=False)
 
@@ -228,7 +240,7 @@ def query_all():
 @app.route('/api/file/<fileid>', methods=['GET'])
 def query_file(fileid):
     log = open(log_file, 'a+')
-    log.write('>>>Client contact /api/srv4/<fileid>...'+str(datetime.datetime.now())+'\r\n')
+    log.write('>>>Client contact /api/file/<fileid>...'+str(datetime.datetime.now())+'\r\n')
 
     client = MongoClient(DB_IP, DB_PORT)
     db = client[DB_NAME]
