@@ -47,6 +47,8 @@ ACCOUNT_KEY_PASSWORD = 'password'
 ACCOUNT_KEY_HASH = 'hash'
 
 
+#====================Common======================
+
 #produce datetime string
 def nowStr():
     yy = str(datetime.datetime.now().year)
@@ -59,21 +61,22 @@ def nowStr():
     return yy+'_'+mm+'_'+dd+'_'+hh+'_'+mins+'_'+sec+'_'+micsec
 
 
+#====================Testing======================
+
 #For http connection testing
-@app.route('/test/hello/')
+@app.route('/test/hello/', methods=['GET'])
 def test_hello():
     return 'Hello World!'
 
 
 #
-@app.route('/test/path/')
+@app.route('/test/path/', methods=['GET'])
 def test_path():
     s = 'Log file:'+log_file+' Upload folder: '+UPLOAD_FOLDER+' Download folder:'+DOWNLOAD_FOLDER
     return s
 
 
-#====================Testing and Formal area divider======================
-
+#====================Data using======================
 
 #Post FORM data to db (include image)
 @app.route('/api/post/', methods=['GET', 'POST'])
@@ -263,6 +266,9 @@ def query_file(fileid):
 
     #return str(str(fileid)+'.jpg')
     return send_file(save_full_path, mimetype='image/jpg')
+
+
+#====================security validate======================
 
 
 ## Add User
