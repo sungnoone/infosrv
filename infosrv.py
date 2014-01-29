@@ -61,6 +61,54 @@ def nowStr():
     return yy+'_'+mm+'_'+dd+'_'+hh+'_'+mins+'_'+sec+'_'+micsec
 
 
+# base64 decoding -> sha256 hash code check
+def user_auth(code_string):
+    log = open(log_file, 'a+')
+    log.write('>>>user_auth start...'+str(datetime.datetime.now())+'\r\n')
+    #decode base64 encoding
+    try:
+        log.write('Decoding...'+code_string+'\r\n')
+        decode_data = base64.b64decode(code_string)
+        #convert to utf-8
+        decode_data = decode_data.decode("utf-8")
+    except:
+        log.write('Decoding fail...\r\n')
+        log.close()
+        return ""
+        ## db operation
+    try:
+        client = MongoClient(DB_IP, DB_PORT)
+        db = client[DB_NAME]
+        collection = db[DB_COLLECTION_Users]
+        posts = collection.find()
+        log.write('Find all data count: %s \r\n' % str(posts.count()))
+    except:
+        log.write('DB operation fail...\r\n')
+        log.close()
+        return ""
+    post_json = {}
+    for idx, iDoc in enumerate(posts):
+        #mongodb doc dump to string
+        doc_json = bson.json_util.dumps(iDoc, ensure_ascii=False)
+        #string convert to json
+        doc_json = json.loads(doc_json)
+        #To get key value
+        val_username = doc_json[ACCOUNT_KEY_NAME]
+        val_password = doc_json[ACCOUNT_KEY_PASSWORD]
+        val_hash = doc_json[ACCOUNT_KEY_HASH]
+        if val_hash == decode_data:
+            log.write('Find match hash code: '+decode_data + ' , return username: '+ val_username + '\r\n')
+            log.close()
+            client.close()
+            #return match result
+            return val_username
+    #no match user hash
+    log.close()
+    client.close()
+    #return bson.json_util.dumps(post_json, ensure_ascii=False)
+    return ""
+    
+
 #====================Testing======================
 
 #For http connection testing
@@ -69,12 +117,18 @@ def test_hello():
     return 'Hello World!'
 
 
-#
+#For path testing
 @app.route('/test/path/', methods=['GET'])
 def test_path():
     s = 'Log file:'+log_file+' Upload folder: '+UPLOAD_FOLDER+' Download folder:'+DOWNLOAD_FOLDER
     return s
 
+
+#For auth testing
+@app.route('/test/auth/<code_string>', methods=['GET'])
+def test_auth(code_string):
+    s = user_auth(code_string)
+    return s
 
 #====================Data using======================
 
@@ -295,9 +349,14 @@ def user_add():
             ## log every key&value in ImmutableMultiDict object
             item_json = {str(item):str(data[item])}
             post_json.update(item_json)
-            #Using password as hash key
+            #Using username + password as hash key
             if str(item)==ACCOUNT_KEY_PASSWORD:
-                encrypt_Source = data[item]
+                #encrypt_Source = data[item]
+                received_password = data[item]
+            elif str(item)==ACCOUNT_KEY_NAME:
+                received_username = data[item]
+        # username convert to upper , but password must be Case sensitive
+        encrypt_Source = str(received_username).upper()+str(received_password)
         log.write('encrypt_Source:'+encrypt_Source+'\r\n')
         hash_object = hashlib.sha256(str.encode(encrypt_Source))
         hex_dig = hash_object.hexdigest()

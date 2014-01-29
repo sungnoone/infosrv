@@ -2,6 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="ee9a3860-de5e-45e2-8c74-489e88d355b6" name="Default" comment="">
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/infosrv.py" afterPath="$PROJECT_DIR$/infosrv.py" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
     <ignored path="infosrv.iws" />
@@ -14,7 +15,7 @@
   </component>
   <component name="ChangesViewManager" flattened_view="true" show_ignored="false" />
   <component name="CoverageDataManager">
-    <SUITE FILE_PATH="coverage/infosrv$infosrv.coverage" NAME="infosrv Coverage Results" MODIFIED="1390456253638" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/infosrv$infosrv.coverage" NAME="infosrv Coverage Results" MODIFIED="1390967966130" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
   </component>
   <component name="CreatePatchCommitExecutor">
     <option name="PATCH_PATH" value="" />
@@ -31,15 +32,14 @@
       <file leaf-file-name="infosrv.py" pinned="false" current="true" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/infosrv.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="138" column="19" selection-start="4296" selection-end="4296" vertical-scroll-proportion="0.8089172" vertical-offset="1569" max-vertical-offset="2610">
+            <state line="105" column="15" selection-start="3083" selection-end="3083" vertical-scroll-proportion="0.19188768" vertical-offset="1332" max-vertical-offset="3840">
               <folding>
                 <element signature="e#46#55#0" expanded="true" />
                 <element signature="e#1156#1533#0" expanded="false" />
-                <element signature="e#4506#7074#0" expanded="false" />
-                <element signature="e#7158#7882#0" expanded="false" />
-                <element signature="e#7975#8719#0" expanded="false" />
-                <element signature="e#8864#10434#0" expanded="false" />
-                <element signature="e#10538#12127#0" expanded="false" />
+                <element signature="e#3865#6203#0" expanded="false" />
+                <element signature="e#6320#8888#0" expanded="false" />
+                <element signature="e#8972#9696#0" expanded="false" />
+                <element signature="e#9789#10533#0" expanded="false" />
               </folding>
             </state>
           </provider>
@@ -74,7 +74,7 @@
     <option name="x" value="48" />
     <option name="y" value="-7" />
     <option name="width" value="1229" />
-    <option name="height" value="899" />
+    <option name="height" value="943" />
   </component>
   <component name="ProjectLevelVcsManager" settingsEditedManually="true">
     <OptionsSetting value="true" id="Add" />
@@ -87,7 +87,7 @@
     <ConfirmationsSetting value="0" id="Remove" />
   </component>
   <component name="ProjectReloadState">
-    <option name="STATE" value="2" />
+    <option name="STATE" value="0" />
   </component>
   <component name="ProjectView">
     <navigator currentView="ProjectPane" proportions="" version="1" splitterProportion="0.5">
@@ -102,6 +102,7 @@
       <sortByType />
     </navigator>
     <panes>
+      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <PATH>
@@ -130,19 +131,18 @@
           </PATH>
         </subPane>
       </pane>
-      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
     <property name="options.splitter.main.proportions" value="0.3" />
     <property name="WebServerToolWindowFactoryState" value="false" />
-    <property name="options.lastSelected" value="com.jetbrains.python.configuration.PythonSdkConfigurable" />
     <property name="recentsLimit" value="5" />
-    <property name="restartRequiresConfirmation" value="true" />
+    <property name="options.lastSelected" value="com.jetbrains.python.configuration.PythonSdkConfigurable" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$/.." />
+    <property name="restartRequiresConfirmation" value="true" />
     <property name="FullScreen" value="false" />
-    <property name="options.searchVisible" value="true" />
     <property name="options.splitter.details.proportions" value="0.2" />
+    <property name="options.searchVisible" value="true" />
   </component>
   <component name="PyConsoleOptionsProvider">
     <option name="myPythonConsoleState">
@@ -253,9 +253,6 @@
       <option name="PARAMETERS" value="" />
       <method />
     </configuration>
-    <configuration default="true" type="JavascriptDebugType" factoryName="JavaScript Debug" singleton="true">
-      <method />
-    </configuration>
     <configuration default="true" type="tests" factoryName="Unittests">
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
@@ -277,6 +274,9 @@
       <option name="PUREUNITTEST" value="true" />
       <option name="PARAMS" value="" />
       <option name="USE_PARAM" value="false" />
+      <method />
+    </configuration>
+    <configuration default="true" type="JavascriptDebugType" factoryName="JavaScript Debug" singleton="true">
       <method />
     </configuration>
     <configuration default="true" type="tests" factoryName="Doctests">
@@ -397,19 +397,19 @@
     <servers />
   </component>
   <component name="ToolWindowManager">
-    <frame x="48" y="-7" width="1229" height="899" extended-state="6" />
+    <frame x="48" y="-7" width="1229" height="943" extended-state="6" />
     <editor active="true" />
     <layout>
-      <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.34850454" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.34809348" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.24938875" sideWeight="0.65149546" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.24938875" sideWeight="0.82533824" order="0" side_tool="false" content_ui="combo" />
       <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.17466174" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.17466174" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
@@ -444,30 +444,14 @@
   <component name="editorHistoryManager">
     <entry file="file://$PROJECT_DIR$/infosrv.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="138" column="31" selection-start="4473" selection-end="4473" vertical-scroll-proportion="0.0" vertical-offset="2055" max-vertical-offset="2055">
-          <folding>
-            <element signature="e#46#55#0" expanded="true" />
-            <element signature="e#1156#1533#0" expanded="false" />
-            <element signature="e#4506#7074#0" expanded="false" />
-            <element signature="e#7158#7882#0" expanded="false" />
-            <element signature="e#7975#8719#0" expanded="false" />
-            <element signature="e#8864#10434#0" expanded="false" />
-            <element signature="e#10538#12127#0" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/infosrv.py">
-      <provider selected="true" editor-type-id="text-editor">
         <state line="120" column="36" selection-start="3777" selection-end="3777" vertical-scroll-proportion="0.0" vertical-offset="1680" max-vertical-offset="2370">
           <folding>
             <element signature="e#46#55#0" expanded="true" />
             <element signature="e#1156#1533#0" expanded="false" />
-            <element signature="e#4506#7074#0" expanded="false" />
-            <element signature="e#7158#7882#0" expanded="false" />
-            <element signature="e#7975#8719#0" expanded="false" />
-            <element signature="e#8864#10434#0" expanded="false" />
-            <element signature="e#10538#12127#0" expanded="false" />
+            <element signature="e#3865#6203#0" expanded="false" />
+            <element signature="e#6320#8888#0" expanded="false" />
+            <element signature="e#8972#9696#0" expanded="false" />
+            <element signature="e#9789#10533#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -478,11 +462,10 @@
           <folding>
             <element signature="e#46#55#0" expanded="true" />
             <element signature="e#1156#1533#0" expanded="false" />
-            <element signature="e#4506#7074#0" expanded="false" />
-            <element signature="e#7158#7882#0" expanded="false" />
-            <element signature="e#7975#8719#0" expanded="false" />
-            <element signature="e#8864#10434#0" expanded="false" />
-            <element signature="e#10538#12127#0" expanded="false" />
+            <element signature="e#3865#6203#0" expanded="false" />
+            <element signature="e#6320#8888#0" expanded="false" />
+            <element signature="e#8972#9696#0" expanded="false" />
+            <element signature="e#9789#10533#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -493,11 +476,10 @@
           <folding>
             <element signature="e#46#55#0" expanded="true" />
             <element signature="e#1156#1533#0" expanded="false" />
-            <element signature="e#4506#7074#0" expanded="false" />
-            <element signature="e#7158#7882#0" expanded="false" />
-            <element signature="e#7975#8719#0" expanded="false" />
-            <element signature="e#8864#10434#0" expanded="false" />
-            <element signature="e#10538#12127#0" expanded="false" />
+            <element signature="e#3865#6203#0" expanded="false" />
+            <element signature="e#6320#8888#0" expanded="false" />
+            <element signature="e#8972#9696#0" expanded="false" />
+            <element signature="e#9789#10533#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -508,11 +490,10 @@
           <folding>
             <element signature="e#46#55#0" expanded="true" />
             <element signature="e#1156#1533#0" expanded="false" />
-            <element signature="e#4506#7074#0" expanded="false" />
-            <element signature="e#7158#7882#0" expanded="false" />
-            <element signature="e#7975#8719#0" expanded="false" />
-            <element signature="e#8864#10434#0" expanded="false" />
-            <element signature="e#10538#12127#0" expanded="false" />
+            <element signature="e#3865#6203#0" expanded="false" />
+            <element signature="e#6320#8888#0" expanded="false" />
+            <element signature="e#8972#9696#0" expanded="false" />
+            <element signature="e#9789#10533#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -523,11 +504,10 @@
           <folding>
             <element signature="e#46#55#0" expanded="true" />
             <element signature="e#1156#1533#0" expanded="false" />
-            <element signature="e#4506#7074#0" expanded="false" />
-            <element signature="e#7158#7882#0" expanded="false" />
-            <element signature="e#7975#8719#0" expanded="false" />
-            <element signature="e#8864#10434#0" expanded="false" />
-            <element signature="e#10538#12127#0" expanded="false" />
+            <element signature="e#3865#6203#0" expanded="false" />
+            <element signature="e#6320#8888#0" expanded="false" />
+            <element signature="e#8972#9696#0" expanded="false" />
+            <element signature="e#9789#10533#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -538,11 +518,10 @@
           <folding>
             <element signature="e#46#55#0" expanded="true" />
             <element signature="e#1156#1533#0" expanded="false" />
-            <element signature="e#4506#7074#0" expanded="false" />
-            <element signature="e#7158#7882#0" expanded="false" />
-            <element signature="e#7975#8719#0" expanded="false" />
-            <element signature="e#8864#10434#0" expanded="false" />
-            <element signature="e#10538#12127#0" expanded="false" />
+            <element signature="e#3865#6203#0" expanded="false" />
+            <element signature="e#6320#8888#0" expanded="false" />
+            <element signature="e#8972#9696#0" expanded="false" />
+            <element signature="e#9789#10533#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -553,11 +532,10 @@
           <folding>
             <element signature="e#46#55#0" expanded="true" />
             <element signature="e#1156#1533#0" expanded="false" />
-            <element signature="e#4506#7074#0" expanded="false" />
-            <element signature="e#7158#7882#0" expanded="false" />
-            <element signature="e#7975#8719#0" expanded="false" />
-            <element signature="e#8864#10434#0" expanded="false" />
-            <element signature="e#10538#12127#0" expanded="false" />
+            <element signature="e#3865#6203#0" expanded="false" />
+            <element signature="e#6320#8888#0" expanded="false" />
+            <element signature="e#8972#9696#0" expanded="false" />
+            <element signature="e#9789#10533#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -568,11 +546,10 @@
           <folding>
             <element signature="e#46#55#0" expanded="true" />
             <element signature="e#1156#1533#0" expanded="false" />
-            <element signature="e#4506#7074#0" expanded="false" />
-            <element signature="e#7158#7882#0" expanded="false" />
-            <element signature="e#7975#8719#0" expanded="false" />
-            <element signature="e#8864#10434#0" expanded="false" />
-            <element signature="e#10538#12127#0" expanded="false" />
+            <element signature="e#3865#6203#0" expanded="false" />
+            <element signature="e#6320#8888#0" expanded="false" />
+            <element signature="e#8972#9696#0" expanded="false" />
+            <element signature="e#9789#10533#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -583,11 +560,10 @@
           <folding>
             <element signature="e#46#55#0" expanded="true" />
             <element signature="e#1156#1533#0" expanded="false" />
-            <element signature="e#4506#7074#0" expanded="false" />
-            <element signature="e#7158#7882#0" expanded="false" />
-            <element signature="e#7975#8719#0" expanded="false" />
-            <element signature="e#8864#10434#0" expanded="false" />
-            <element signature="e#10538#12127#0" expanded="false" />
+            <element signature="e#3865#6203#0" expanded="false" />
+            <element signature="e#6320#8888#0" expanded="false" />
+            <element signature="e#8972#9696#0" expanded="false" />
+            <element signature="e#9789#10533#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -598,11 +574,10 @@
           <folding>
             <element signature="e#46#55#0" expanded="true" />
             <element signature="e#1156#1533#0" expanded="false" />
-            <element signature="e#4506#7074#0" expanded="false" />
-            <element signature="e#7158#7882#0" expanded="false" />
-            <element signature="e#7975#8719#0" expanded="false" />
-            <element signature="e#8864#10434#0" expanded="false" />
-            <element signature="e#10538#12127#0" expanded="false" />
+            <element signature="e#3865#6203#0" expanded="false" />
+            <element signature="e#6320#8888#0" expanded="false" />
+            <element signature="e#8972#9696#0" expanded="false" />
+            <element signature="e#9789#10533#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -613,11 +588,10 @@
           <folding>
             <element signature="e#46#55#0" expanded="true" />
             <element signature="e#1156#1533#0" expanded="false" />
-            <element signature="e#4506#7074#0" expanded="false" />
-            <element signature="e#7158#7882#0" expanded="false" />
-            <element signature="e#7975#8719#0" expanded="false" />
-            <element signature="e#8864#10434#0" expanded="false" />
-            <element signature="e#10538#12127#0" expanded="false" />
+            <element signature="e#3865#6203#0" expanded="false" />
+            <element signature="e#6320#8888#0" expanded="false" />
+            <element signature="e#8972#9696#0" expanded="false" />
+            <element signature="e#9789#10533#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -628,31 +602,38 @@
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/infosrv.conf">
-      <provider editor-type-id="com.intellij.persistence.database.editor.CsvTableFileEditorProvider">
-        <state />
-      </provider>
       <provider selected="true" editor-type-id="text-editor">
         <state line="5" column="43" selection-start="211" selection-end="211" vertical-scroll-proportion="0.12254902" vertical-offset="0" max-vertical-offset="612" />
+      </provider>
+      <provider editor-type-id="com.intellij.persistence.database.editor.CsvTableFileEditorProvider">
+        <state />
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/infosrv.wsgi">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="3" column="38" selection-start="95" selection-end="95" vertical-scroll-proportion="0.070202805" vertical-offset="0" max-vertical-offset="641">
+        <state line="3" column="38" selection-start="95" selection-end="95" vertical-scroll-proportion="0.070202805" vertical-offset="0" max-vertical-offset="641" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/infosrv_log.txt">
+      <provider editor-type-id="com.intellij.persistence.database.editor.CsvTableFileEditorProvider">
+        <state />
+      </provider>
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="111" column="47" selection-start="21706" selection-end="21706" vertical-scroll-proportion="0.74958265" vertical-offset="1216" max-vertical-offset="1815">
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/infosrv.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="138" column="19" selection-start="4296" selection-end="4296" vertical-scroll-proportion="0.8089172" vertical-offset="1569" max-vertical-offset="2610">
+        <state line="105" column="15" selection-start="3083" selection-end="3083" vertical-scroll-proportion="0.19188768" vertical-offset="1332" max-vertical-offset="3840">
           <folding>
             <element signature="e#46#55#0" expanded="true" />
             <element signature="e#1156#1533#0" expanded="false" />
-            <element signature="e#4506#7074#0" expanded="false" />
-            <element signature="e#7158#7882#0" expanded="false" />
-            <element signature="e#7975#8719#0" expanded="false" />
-            <element signature="e#8864#10434#0" expanded="false" />
-            <element signature="e#10538#12127#0" expanded="false" />
+            <element signature="e#3865#6203#0" expanded="false" />
+            <element signature="e#6320#8888#0" expanded="false" />
+            <element signature="e#8972#9696#0" expanded="false" />
+            <element signature="e#9789#10533#0" expanded="false" />
           </folding>
         </state>
       </provider>
