@@ -46,6 +46,8 @@ ACCOUNT_KEY_NAME = 'name'
 ACCOUNT_KEY_PASSWORD = 'password'
 ACCOUNT_KEY_HASH = 'hash'
 
+AUTH_CODE_KEY_NAME = 'auth_code'
+
 
 #====================Common======================
 
@@ -109,6 +111,42 @@ def user_auth(code_string):
     return ""
     
 
+# get auth code on request data
+def get_auth_from_request(request_data):
+    #log message
+    log = open(log_file, 'a+')
+    log.write('>>>Running get_auth_from_request()...'+str(datetime.datetime.now())+'\r\n')
+    # we transfer auth code on post data for security.
+    # security string json format: {'auth_code':'xxxxxxxxxxxx','key_name':'key_value',..........}
+    post_data = request.data
+    # request data is bytes type, so we need decode bytes to string
+    try:
+        str_data = post_data.decode('utf-8')
+        log.write('request data : '+str(str_data)+'\r\n')
+    except:
+        log.write('request data decode error!\r\n')
+        log.close()
+        return 'fail'
+    # convert string request data to json object
+    try:
+        json_data = json.loads(str_data)
+        log.write('request data into json : '+str(json_data)+'\r\n')
+    except:
+        log.write('request data convert json error!\r\n')
+        log.close()
+        return 'fail'
+    for item in json_data:
+        if str(item) == AUTH_CODE_KEY_NAME:
+            # get key value
+            code_string = json_data[item]
+            break
+    # check who owned this code_string
+    log.write('find code string : '+code_string+'\r\n')
+    username = user_auth(code_string)
+    log.write('find user : '+username+'\r\n')
+    log.close()
+    return username
+
 #====================Testing======================
 
 #For http connection testing
@@ -125,10 +163,42 @@ def test_path():
 
 
 #For auth testing
-@app.route('/test/auth/<code_string>', methods=['GET'])
-def test_auth(code_string):
-    s = user_auth(code_string)
-    return s
+@app.route('/test/security/query/', methods=['POST'])
+def test_security_query():
+    #log message
+    log = open(log_file, 'a+')
+    log.write('>>>Client contact /test/security/query/...'+str(datetime.datetime.now())+'\r\n')
+
+    # we transfer auth code on post data for security.
+    # security string json format: {'auth_code':'xxxxxxxxxxxx','key_name':'key_value',..........}
+    post_data = request.data
+    # request data is bytes type, so we need decode bytes to string
+    try:
+        str_data = post_data.decode('utf-8')
+        log.write('request data : '+str(str_data)+'\r\n')
+    except:
+        log.write('request data decode error!\r\n')
+        log.close()
+        return 'fail'
+    # convert string request data to json object
+    try:
+        json_data = json.loads(str_data)
+        log.write('request data into json : '+str(json_data)+'\r\n')
+    except:
+        log.write('request data convert json error!\r\n')
+        log.close()
+        return 'fail'
+    for item in json_data:
+        if str(item)==AUTH_CODE_KEY_NAME:
+            # get key value
+            code_string = json_data[item]
+            break
+    # check who owned this code_string
+    log.write('find code string : '+code_string+'\r\n')
+    username = user_auth(code_string)
+    log.write('find user : '+username+'\r\n')
+    log.close()
+    return username
 
 #====================Data using======================
 
@@ -322,6 +392,96 @@ def query_file(fileid):
     return send_file(save_full_path, mimetype='image/jpg')
 
 
+#====================Security Data using======================
+
+
+# Security -- Post FORM data to db (include image)
+@app.route('/api/security/post/', methods=['POST'])
+def security_post_form_data():
+    #log message
+    log = open(log_file, 'a+')
+    log.write('>>>Client contact /api/security/post/...'+str(datetime.datetime.now())+'\r\n')
+
+    log.write('request method POST\r\n')
+    ##write request
+    request_data = request.data
+    request_form = request.form
+    log.write('request_form: '+str(request.form)+'\r\n')
+    #Getting from client image form field
+    request_file1 = request.files[REMOTE_FIELD_IMAGE1]
+    log.write('request_file1: '+request_file1.filename+'\r\n')
+    # get extension name
+    main_name, ext_name = os.path.splitext(request_file1.filename)
+    # now datetime as new file name
+    new_filename = secure_filename(nowStr())+ext_name
+    new_fullpath = os.path.join(UPLOAD_FOLDER, new_filename)
+    ## Save to server location
+    log.write('before write file on server: '+new_fullpath+'\r\n')
+    request_file1.save(new_fullpath)
+    log.write('after write file on server'+new_fullpath+'\r\n')
+
+    #Write data into db
+    ## db operation
+    client = MongoClient(DB_IP, DB_PORT)
+    db = client[DB_NAME]
+
+    #Binary Data
+    ## Store file to db (gridfs)
+    fsdb = gridfs.GridFS(db, collection=GRID_FS_FILE)
+    log.write('before store file into db...\r\n')
+    outputdata = open(new_fullpath, 'rb')
+    thedata = outputdata.read()
+    fileid = fsdb.put(thedata, filename=new_filename, extname=ext_name)
+    log.write('fileid: '+str(fileid)+'\r\n')
+    outputdata.close()
+
+    #Text Data
+    collection = db[DB_COLLECTION]
+    post_json = {}
+    ## Traversal all items in ImmutableMultiDict. Convert into json
+    for item in request_form:
+        ## log every key&value in ImmutableMultiDict object
+        item_json = {str(item):str(request_form[item])}
+        post_json.update(item_json)
+    ## add image id
+    post_json.update({'image': fileid})
+    log.write('post json: '+str(post_json)+'\r\n')
+    ## Save form data to db
+    log.write('before save to db...\r\n')
+    ret_id = collection.save(post_json)
+    log.write('after save to db:'+str(ret_id)+'\r\n')
+    client.close()
+
+    log.close()
+    return "Data Saved!"
+
+
+## Security -- Get all data
+@app.route('/api/security/query/all/', methods=['POST'])
+def security_query_all():
+    # if user not exist, return empty
+    request_data = request.data
+    user = get_auth_from_request(request_data)
+    if user == '' or user == 'fail':
+        return ''
+    # after user check
+    log = open(log_file, 'a+')
+    log.write('>>>Client contact /api/security/query/all/...'+str(datetime.datetime.now())+'\r\n')
+    ## db operation
+    client = MongoClient(DB_IP, DB_PORT)
+    db = client[DB_NAME]
+    collection = db[DB_COLLECTION]
+    posts = collection.find()
+    log.write('Find all data count: %s \r\n' % str(posts.count()))
+    post_json = {}
+    for idx, iDoc in enumerate(posts):
+        iDoc_json = bson.json_util.dumps(iDoc, ensure_ascii=False)
+        post_json.update({idx: iDoc_json})
+    log.write('%s\r\n' % post_json)
+    log.close()
+    return bson.json_util.dumps(post_json, ensure_ascii=False)
+
+
 #====================security validate======================
 
 
@@ -348,19 +508,22 @@ def user_add():
         for item in data:
             ## log every key&value in ImmutableMultiDict object
             item_json = {str(item):str(data[item])}
-            post_json.update(item_json)
+            #post_json.update(item_json)
             #Using username + password as hash key
             if str(item)==ACCOUNT_KEY_PASSWORD:
                 #encrypt_Source = data[item]
                 received_password = data[item]
             elif str(item)==ACCOUNT_KEY_NAME:
                 received_username = data[item]
+                # user name all uppercase
+                received_username = received_username.upper()
         # username convert to upper , but password must be Case sensitive
         encrypt_Source = str(received_username).upper()+str(received_password)
         log.write('encrypt_Source:'+encrypt_Source+'\r\n')
+        # sha256 hash
         hash_object = hashlib.sha256(str.encode(encrypt_Source))
         hex_dig = hash_object.hexdigest()
-        post_json.update({'hash':hex_dig})
+        post_json.update({ACCOUNT_KEY_NAME:received_username,ACCOUNT_KEY_PASSWORD:received_password,ACCOUNT_KEY_HASH:hex_dig})
         log.write('post json: '+str(post_json)+'\r\n')
         ## Save form data to db
         log.write('before save to db...\r\n')
